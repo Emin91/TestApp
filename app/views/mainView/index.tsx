@@ -18,17 +18,17 @@ interface Props {
 export type eventsResponseData = Endpoints["GET /events"]["response"];
 export type eventsResponse = Endpoints["GET /events"]["response"];
 export type eventItem = components["schemas"]["event"];
-const octokit = new Octokit({ auth: `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` });
+const octokit = new Octokit({ auth: `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` });
 
 export const MainView: FC<Props> = memo(({ navigation }: Props) => {
     const styles = useMemo(() => getStyle(), []);
     const [timer] = useState<number>(10000);
     const flatList = useRef<FlatList>(null);
     const isFocused: boolean = useIsFocused();
-    const { _setEventsList } = useAppDispatch();
     const [isRefresh, setIsRefresh] = useState<boolean>(false);
     const { eventsList }: { eventsList: eventsResponse["data"] } = useAppSelector(state => state.EventsSlice);
     const { countdown, startTimer, resetTimer, pauseTimer } = useCountdownTimer({ timer, onExpire: () => { getEvents(); } });
+    const { _setEventsList } = useAppDispatch();
 
     const getEvents = async (): Promise<void> => {
         const { data }: { data: eventsResponseData["data"] } = await octokit.request(`GET /events?per_page=25`, {
